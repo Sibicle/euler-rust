@@ -1,8 +1,64 @@
 fn main() {
-    eleven();
+    twelve();
+    // println!("{:?}", factor(5273128));
 }
 
-fn eleven() {
+fn twelve() {
+    let mut tri = 1;
+    let mut i = 2;
+    let mut fac = 2;
+
+    loop {
+        tri = tri + i;
+        i = i + 1;
+
+        let new_fac = factor(tri).len();
+
+        if new_fac > fac { fac = new_fac }
+
+        if fac > 500 { break }
+        println!("{} {}", tri, fac);
+    }
+
+    println!("{}", tri);
+}
+
+fn factor(num: i32) -> Vec<i32> {
+    let mut factors: Vec<i32> = Vec::new(); // creates a new vector for the factors of the number
+
+    for i in 1..((num as f32).sqrt() as i32 + 1) {
+        if num % i == 0 {
+            factors.push(i); // pushes smallest factor to factors
+            factors.push(num/i); // pushes largest factor to factors
+        }
+    }
+    factors.sort(); // sorts the factors into numerical order for viewing purposes
+    factors // returns the factors
+}
+
+fn sieve(limit: usize) -> Vec<usize> {
+
+    let mut is_prime = vec![true; limit+1];
+    is_prime[0] = false;
+    if limit >= 1 { is_prime[1] = false }
+    let sqrtlmt = (limit as f64).sqrt() as usize + 1;
+
+    for num in 2..sqrtlmt {
+        if is_prime[num] {
+            let mut multiple = num*num;
+            while multiple <= limit {
+                is_prime[multiple] = false;
+                multiple += num;
+            }
+        }
+    }
+
+    is_prime.iter().enumerate()
+        .filter_map(|(pr, &is_pr)| if is_pr {Some(pr)} else {None} )
+        .collect()
+}
+
+fn _eleven() {
     let arr = [
         [ 08, 02, 22, 97, 38, 15, 00, 40, 00, 75, 04, 05, 07, 78, 52, 12, 50, 77, 91, 08 ],
         [ 49, 49, 99, 40, 17, 81, 18, 57, 60, 87, 17, 40, 98, 43, 69, 48, 04, 56, 62, 00 ],
