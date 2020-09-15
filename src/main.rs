@@ -1,20 +1,53 @@
+extern crate num;
+
 use elapsed::measure_time;
-use num_bigint::{BigUint, ToBigUint};
+use num::bigint::{BigUint, ToBigUint};
 
 fn main() {
-    let (elapsed, answer) = measure_time(|| fourteen());
+    let (elapsed, answer) = measure_time(|| sixteen());
 
     println!("elapsed: {}", elapsed);
-    println!("terms: {}", answer.terms);
-    println!("num: {}", answer.num);
+    println!("answer: {}", answer.answer);
+    println!("context: {}", answer.context);
+}
+
+fn sixteen() -> Answer {
+    let number_str = BigUint::from(2u32).pow(1000).to_string();
+    let sum: u32 = number_str.chars().map(|c| c.to_digit(10).unwrap()).sum();
+
+    Answer {
+        answer: sum as usize,
+        context: number_str
+    }
+}
+
+fn _fifteen() -> Answer {
+    Answer {
+        answer: paths(2, 2, 0),
+        context: String::from("none")
+    }
+}
+
+fn paths(width: usize, height: usize, _this_path: usize) -> usize {
+    let mut num_paths: usize = 0;
+
+    if width > 0 {
+        num_paths += paths(width-1, height, num_paths);
+    }
+
+    if height > 0 {
+        num_paths += paths(width, height-1, num_paths);
+    }
+
+    return num_paths;
 }
 
 struct Answer {
-    num: usize,
-    terms: usize,
+    answer: usize,
+    context: String,
 }
 
-fn fourteen() -> Answer {
+fn _fourteen() -> Answer {
     const START: usize = 1_000_000;
     let mut terms: usize = 0;
     let mut num: usize = 0;
@@ -27,7 +60,10 @@ fn fourteen() -> Answer {
         }
     }
 
-    Answer { num, terms }
+    Answer {
+        answer: num,
+        context: terms.to_string()
+    }
 }
 
 fn collatz_terms(num: usize) -> usize {
