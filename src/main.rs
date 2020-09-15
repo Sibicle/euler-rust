@@ -1,25 +1,33 @@
+use elapsed::measure_time;
 use num_bigint::{BigUint, ToBigUint};
 
 fn main() {
-    fourteen();
+    let (elapsed, answer) = measure_time(|| fourteen());
+
+    println!("elapsed: {}", elapsed);
+    println!("terms: {}", answer.terms);
+    println!("num: {}", answer.num);
 }
 
-fn fourteen() {
+struct Answer {
+    num: usize,
+    terms: usize,
+}
+
+fn fourteen() -> Answer {
     const START: usize = 1_000_000;
-    let mut max_terms: usize = 0;
-    let mut max_num: usize = 0;
+    let mut terms: usize = 0;
+    let mut num: usize = 0;
 
     for i in 1..START {
-        let terms = collatz_terms(i);
-        println!("{} {}", i, terms);
-        if terms > max_terms {
-            max_terms = terms;
-            max_num = i;
+        let t = collatz_terms(i);
+        if t > terms {
+            terms = terms;
+            num = i;
         }
-
     }
 
-    println!("{} {}", max_num, max_terms);
+    Answer { num, terms }
 }
 
 fn collatz_terms(num: usize) -> usize {
@@ -27,12 +35,13 @@ fn collatz_terms(num: usize) -> usize {
     let mut new_num: usize = num;
 
     loop {
-        if new_num <= 1 { break; }
-
-        if new_num%2 == 0 {
-            new_num = new_num / 2;
+        if new_num <= 1 {
+            break;
         }
-        else {
+
+        if new_num % 2 == 0 {
+            new_num = new_num / 2;
+        } else {
             new_num = (new_num * 3) + 1;
         }
 

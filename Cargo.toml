@@ -8,4 +8,4 @@ edition = "2018"
 
 [dependencies]
 num-bigint = "0.3"
-is-even = "1.0.0"
+elapsed = "0.1"
