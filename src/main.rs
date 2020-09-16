@@ -4,27 +4,198 @@ use elapsed::measure_time;
 use num::bigint::{BigUint, ToBigUint};
 
 fn main() {
-    let (elapsed, answer) = measure_time(|| sixteen());
+    let (elapsed, answer) = measure_time(|| seventeen(1_000));
 
     println!("elapsed: {}", elapsed);
     println!("answer: {}", answer.answer);
     println!("context: {}", answer.context);
 }
 
+fn seventeen(num: usize) -> Answer {
+    let mut string = String::new();
+
+    for i in 1..num + 1 {
+        let s = num_to_text(i);
+        println!("{} {}",i, s);
+        string.push_str(&s);
+        string.push_str("  ");
+    }
+
+    let ans_str = string.replace(" ", "").replace("-", "");
+    println!("'{}'", ans_str);
+
+    Answer {
+        answer: ans_str.len(),
+        context: num_to_text(1_234_618),
+    }
+}
+
+fn num_to_text(num: usize) -> String {
+    let mut string: String = String::new();
+    let mut num_cur: usize = num;
+    let mut place: usize = 0;
+
+    while num_cur > 0 {
+        if place > 33 {
+            return String::from("a lot");
+        }
+
+        let hun = num_cur % 1000;
+
+        if hun != 0 {
+            let mut place_str: String = String::new();
+
+            match place {
+                1 => place_str.push_str(" thousand"),
+                2 => place_str.push_str(" million"),
+                3 => place_str.push_str(" billion"),
+                4 => place_str.push_str(" trillion"),
+                5 => place_str.push_str(" quadrillion"),
+                6 => place_str.push_str(" quintillion"),
+                7 => place_str.push_str(" sextillion"),
+                8 => place_str.push_str(" septillion"),
+                9 => place_str.push_str(" octillion"),
+                10 => place_str.push_str(" nonillion"),
+                11 => place_str.push_str(" decillion"),
+                12 => place_str.push_str(" undecillion"),
+                13 => place_str.push_str(" duodecillion"),
+                14 => place_str.push_str(" tredecillion"),
+                15 => place_str.push_str(" quattuordecillion"),
+                16 => place_str.push_str(" quindecillion"),
+                17 => place_str.push_str(" sexdecillion"),
+                18 => place_str.push_str(" septemdecillion"),
+                19 => place_str.push_str(" octodecillion"),
+                20 => place_str.push_str(" novemdecillion"),
+                21 => place_str.push_str(" vigintillion"),
+                22 => place_str.push_str(" unvigintillion"),
+                23 => place_str.push_str(" duovigintillion"),
+                24 => place_str.push_str(" trevigintillion"),
+                25 => place_str.push_str(" quattuorvigintillion"),
+                26 => place_str.push_str(" quinvigintillion"),
+                27 => place_str.push_str(" sexvigintillion"),
+                28 => place_str.push_str(" septvigintillion"),
+                29 => place_str.push_str(" octovigintillion"),
+                30 => place_str.push_str(" nonvigintillion"),
+                31 => place_str.push_str(" trigintillion"),
+                32 => place_str.push_str(" untrigintillion"),
+                33 => place_str.push_str(" duotrigintillion"),
+                _ => (),
+            }
+
+            place_str.insert_str(0, &hun_to_text(hun));
+
+            string.insert_str(0, &place_str);
+            string.insert_str(0, " ");
+        }
+
+        num_cur /= 1000;
+        place += 1;
+    }
+
+    string
+}
+
+fn hun_to_text(num: usize) -> String {
+    let mut string = String::new();
+
+    if num > 99 {
+        string.push_str(&digit_to_text(num / 100));
+        string.push_str(" hundred");
+
+        if num % 100 != 0 {
+            string.push_str(" and ");
+        }
+    }
+
+    string.push_str(&tens_to_text(num % 100));
+
+    string
+}
+
+fn tens_to_text(dig: usize) -> String {
+    let mut string = String::new();
+
+    if dig < 10 {
+        string.push_str(&digit_to_text(dig));
+    } else if dig == 10 {
+        string.push_str("ten");
+    } else if dig == 11 {
+        string.push_str("eleven");
+    } else if dig == 12 {
+        string.push_str("twelve");
+    } else if dig == 13 {
+        string.push_str("thirteen");
+    } else if dig == 14 {
+        string.push_str("fourteen");
+    } else if dig == 15 {
+        string.push_str("fifteen");
+    } else if dig == 16 {
+        string.push_str("sixteen");
+    } else if dig == 17 {
+        string.push_str("seventeen");
+    } else if dig == 18 {
+        string.push_str("eighteen");
+    } else if dig == 19 {
+        string.push_str("nineteen");
+    } else if dig > 19 {
+        match dig / 10 {
+            2 => string.push_str("twenty"),
+            3 => string.push_str("thirty"),
+            4 => string.push_str("forty"),
+            5 => string.push_str("fifty"),
+            6 => string.push_str("sixty"),
+            7 => string.push_str("seventy"),
+            8 => string.push_str("eighty"),
+            9 => string.push_str("ninety"),
+            _ => (),
+        }
+
+        if dig % 10 != 0 {
+            string.push_str("-");
+            string.push_str(&digit_to_text(dig % 10))
+        }
+    }
+
+    return string;
+}
+
+fn digit_to_text(dig: usize) -> String {
+    let mut string = String::new();
+
+    match dig {
+        1 => string.push_str("one"),
+        2 => string.push_str("two"),
+        3 => string.push_str("three"),
+        4 => string.push_str("four"),
+        5 => string.push_str("five"),
+        6 => string.push_str("six"),
+        7 => string.push_str("seven"),
+        8 => string.push_str("eight"),
+        9 => string.push_str("nine"),
+        _ => (),
+    }
+
+    string
+}
+
+#[allow(dead_code)]
 fn sixteen() -> Answer {
     let number_str = BigUint::from(2u32).pow(1000).to_string();
     let sum: u32 = number_str.chars().map(|c| c.to_digit(10).unwrap()).sum();
 
     Answer {
         answer: sum as usize,
-        context: number_str
+        context: number_str,
     }
 }
 
-fn _fifteen() -> Answer {
+#[allow(dead_code)]
+fn fifteen() -> Answer {
+    let num: usize = paths(10, 10, 10);
+
     Answer {
-        answer: paths(2, 2, 0),
-        context: String::from("none")
+        answer: num,
+        context: String::from("none"),
     }
 }
 
@@ -32,11 +203,11 @@ fn paths(width: usize, height: usize, _this_path: usize) -> usize {
     let mut num_paths: usize = 0;
 
     if width > 0 {
-        num_paths += paths(width-1, height, num_paths);
+        num_paths += paths(width - 1, height, num_paths);
     }
 
     if height > 0 {
-        num_paths += paths(width, height-1, num_paths);
+        num_paths += paths(width, height - 1, num_paths);
     }
 
     return num_paths;
@@ -47,7 +218,8 @@ struct Answer {
     context: String,
 }
 
-fn _fourteen() -> Answer {
+#[allow(dead_code)]
+fn fourteen() -> Answer {
     const START: usize = 1_000_000;
     let mut terms: usize = 0;
     let mut num: usize = 0;
@@ -62,7 +234,7 @@ fn _fourteen() -> Answer {
 
     Answer {
         answer: num,
-        context: terms.to_string()
+        context: terms.to_string(),
     }
 }
 
