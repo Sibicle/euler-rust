@@ -5,6 +5,7 @@ pub mod one;
 pub mod seventeen;
 pub mod sixteen;
 pub mod thirteen;
+pub mod three;
 pub mod twelve;
 pub mod two;
 

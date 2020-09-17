@@ -37,6 +37,14 @@ pub fn sieve(limit: usize) -> Vec<usize> {
         .collect()
 }
 
+pub fn is_prime(num: u64) -> bool {
+    let sqrtlmt = (num as f64).sqrt() as usize + 1;
+    for i in 2..sqrtlmt {
+        if num % i as u64 == 0 { return false }
+    }
+    true
+}
+
 pub fn fibonacci(terms: Option<u64>, max: Option<u64>) -> Vec<u64> {
     let mut fib: Vec<u64> = vec![1];
 

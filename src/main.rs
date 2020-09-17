@@ -4,7 +4,7 @@ mod problems;
 mod util;
 
 fn main() {
-    let (elapsed, answer) = measure_time(|| problems::two::problem());
+    let (elapsed, answer) = measure_time(|| problems::three::problem());
 
     println!("elapsed: {}", elapsed);
     println!("answer: {}", answer.answer);
