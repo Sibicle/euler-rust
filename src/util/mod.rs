@@ -37,14 +37,14 @@ pub fn sieve(limit: usize) -> Vec<usize> {
         .collect()
 }
 
-pub fn fibonacci(terms: Option<usize>, max: Option<usize>) -> Vec<usize> {
-    let mut fib: Vec<usize> = vec![1];
+pub fn fibonacci(terms: Option<u64>, max: Option<u64>) -> Vec<u64> {
+    let mut fib: Vec<u64> = vec![1];
 
     let mut n_0 = 1;
     let mut n = 1;
 
     loop {
-        if terms != None && fib.len() >= terms.unwrap() {
+        if terms != None && fib.len() >= terms.unwrap() as usize {
             break;
         }
         if max != None && n > max.unwrap() {
