@@ -3,9 +3,13 @@ use crate::problems::Answer;
 #[allow(dead_code)]
 pub fn problem() -> Answer {
     let mut max: u64 = 0;
+    let mut x_max: u64 = 0;
+    let mut y_max: u64 = 0;
 
-    for x in 1..999 {
+    for x in (1..999).rev() {
         for y in (1..999).rev() {
+            if max != 0 && x * y < max { break; }
+
             let pal = x * y;
             let pal_str = (x * y).to_string();
             let len = pal_str.len();
@@ -21,12 +25,16 @@ pub fn problem() -> Answer {
                 }
             }
 
-            if palie && pal > max { max = pal }
+            if palie && pal > max {
+                max = pal;
+                x_max = x;
+                y_max = y;
+            }
         }
     }
 
     Answer {
         answer: max,
-        context: String::from("")
+        context: format!("{} x {}", x_max, y_max)
     }
 }
